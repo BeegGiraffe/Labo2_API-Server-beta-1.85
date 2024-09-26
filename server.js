@@ -20,21 +20,17 @@ const server = createServer(async (req, res) => {
 
 });
 async function handleRequest(req, res) {
-    if (! await handleBookmarksServiceRequest(req, res))
+    if (! await handlemathsServiceRequest(req, res))
         return false;
     return true;
 }
-async function handleBookmarksServiceRequest(req, res) {
-    if (req.url.includes("/api/bookmarks")) {
-        const bookmarksFilePath = "./bookmarks.json";
-        let bookmarksJSON = fs.readFileSync(bookmarksFilePath);
-        let bookmarks = JSON.parse(bookmarksJSON);
+async function handlemathsServiceRequest(req, res) {
+    if (req.url.includes("/api/math")) {
         let validStatus = '';
-        let id = extract_Id_From_Request(req);
         switch (req.method) {
             case 'GET':
                 res.writeHead(400);
-                res.end(`test Get`);
+                res.end(`Im about to cum`);
                 break;
             case 'POST':
                 res.writeHead(400);
