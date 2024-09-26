@@ -30,7 +30,7 @@ async function handlemathsServiceRequest(req, res) {
         switch (req.method) {
             case 'GET':
                 res.writeHead(400);
-                res.end(`Im about to cum`);
+                res.end(`test Get`);
                 break;
             case 'POST':
                 res.writeHead(400);
