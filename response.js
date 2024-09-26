@@ -15,7 +15,7 @@ export default class Response {
             let errorContent = { "error_description": errorMessage };
             return this.end(JSON.stringify(errorContent));
         } else {
-            this.res.writeHead(number, { 'content-type': 'text/plain' });
+            //this.res.writeHead(number, { 'content-type': 'text/plain' });
             return this.end();
         }
     }
