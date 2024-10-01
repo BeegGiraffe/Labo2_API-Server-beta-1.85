@@ -6,8 +6,8 @@ export default class MathsController extends Controller {
     constructor(HttpContext) {
         super(HttpContext, new Repository(new MathModel()));
     }
-}
-get(){
-    //data = this.HttpContext.path.params;
-    //this.HttpContext.response.badRequest("test");
+
+    get() {
+        this.HttpContext.response.JSON(this.HttpContext.path.params);
+    }
 }
