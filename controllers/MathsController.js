@@ -1,29 +1,5 @@
+import mathUtilities from "../mathUtilities.js";
 import Controller from "./Controller.js";
-
-factorial(n) {
-    if (n === 0 || n === 1) {
-      return 1;
-    }
-    return n * factorial(n - 1);
-  }
-  isPrime(value) {
-    for (var i = 2; i < value; i++) {
-      if (value % i === 0) {
-        return false;
-      }
-    }
-    return value > 1;
-  }
-  findPrime(n) {
-    let primeNumber = 0;
-    for (let i = 0; i < n; i++) {
-      primeNumber++;
-      while (!isPrime(primeNumber)) {
-        primeNumber++;
-      }
-    }
-    return primeNumber;
-  }
 
 export default class MathsController extends Controller {
   constructor(HttpContext) {
@@ -38,7 +14,7 @@ export default class MathsController extends Controller {
         let x = data["x"];
         let y = data["y"];
         let n = data["n"];
-        let reponse = null;
+        let reponse;
         if (operator == " ") {
           operator = "+";
         }
@@ -68,11 +44,11 @@ export default class MathsController extends Controller {
           } else if (operator == "%" && !isNaN(x) && !isNaN(y)) {
             reponse = parseInt(x) % parseInt(y);
           } else if (operator == "!" && !isNaN(n)) {
-            reponse = factorial(n);
+            reponse = mathUtilities.factorial(n);
           } else if (operator == "p" && !isNaN(n)) {
-            reponse = isPrime(n);
+            reponse = mathUtilities.isPrime(n);
           } else if (operator == "np" && !isNaN(n)) {
-            reponse = findPrime(n);
+            reponse = mathUtilities.findPrime(n);
           }
           this.HttpContext.response.JSON(reponse);
         }
