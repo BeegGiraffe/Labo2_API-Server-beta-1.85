@@ -16,22 +16,16 @@ export const API_EndPoint = async function (HttpContext) {
                         controller.get(HttpContext.payload);
                         return true;
                     case 'POST':
-                        if (HttpContext.payload)
-                            controller.post(HttpContext.payload);
-                        else
-                            HttpContext.response.unsupported();
+                        HttpContext.response.unsupported();
                         return true;
                     case 'PUT':
-                        if (HttpContext.payload)
-                            controller.put(HttpContext.payload);
-                        else
-                            HttpContext.response.unsupported();
-                            return true;
+                        HttpContext.response.unsupported();
+                        return true;
                     case 'DELETE':
-                        controller.remove(HttpContext.path.id);
+                        HttpContext.response.unsupported();
                         return true;
                     default:
-                        HttpContext.response.notImplemented();
+                        HttpContext.response.unsupported();
                         return true;
                 }
             } catch (error) {

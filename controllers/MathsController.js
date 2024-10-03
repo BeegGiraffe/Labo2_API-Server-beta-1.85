@@ -1,13 +1,27 @@
-import MathModel from '../models/math.js';
-import Repository from '../models/repository.js';
 import Controller from './Controller.js';
 
 export default class MathsController extends Controller {
     constructor(HttpContext) {
-        super(HttpContext, new Repository(new MathModel()));
+        super(HttpContext);
     }
 
     get() {
-        this.HttpContext.response.JSON(this.HttpContext.path.params);
+        let data = this.HttpContext.path.params;
+        if (data) {
+            if (data["op"]) {
+                let operator = data["op"];
+                let values = [];
+                for (let i = 1; i < Object.keys(data).length; i++) {
+                    values.push(data[i]);
+                }
+
+                if (isNaN(operator) || operator == " ") {
+
+                }
+                else 
+                    this.HttpContext.response.JSON("Operator is invalid.");
+                    
+            }
+        }
     }
 }
