@@ -1,4 +1,4 @@
-import mathUtilities from "../mathUtilities.js";
+import { factorial, isPrime, findPrime } from "../mathUtilities.js";
 import Controller from "./Controller.js";
 
 export default class MathsController extends Controller {
@@ -44,11 +44,11 @@ export default class MathsController extends Controller {
           } else if (operator == "%" && !isNaN(x) && !isNaN(y)) {
             reponse = parseInt(x) % parseInt(y);
           } else if (operator == "!" && !isNaN(n)) {
-            reponse = mathUtilities.factorial(n);
+            reponse = factorial(n);
           } else if (operator == "p" && !isNaN(n)) {
-            reponse = mathUtilities.isPrime(n);
+            reponse = isPrime(n);
           } else if (operator == "np" && !isNaN(n)) {
-            reponse = mathUtilities.findPrime(n);
+            reponse = findPrime(n);
           }
           this.HttpContext.response.JSON(reponse);
         }
