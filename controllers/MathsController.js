@@ -57,29 +57,28 @@ export default class MathsController extends Controller {
       this.HttpContext.response.JSON(
         "GET : Maths endpoint" +
         "List of possible query strings:" +
-        
+
         "? op = + & x = number & y = number" +
         'return {“op"x":number, "y":number, "value": x + y}' +
-        
+
         "? op = - & x = number & y = number" +
         'return {"op":"-", "x":number, "y":number, "value": x - y}' +
-        
+
         "? op = * & x = number & y = number" +
         'return {"op":"*", "x":number, "y":number, "value": x * y}' +
-        
+
         "? op = / & x = number & y = number" +
-        
         'return {"op":"/", "x":number, "y":number, "value": x / y}' +
-        
+
         "? op = % & x = number & y = number" +
         'return {"op":"%", "x":number, "y":number, “value”: x % y}' +
-        
+
         "? op = ! & n = integer" +
         'return {"op":"%", "n":integer, "value": n!}' +
-        
+
         "? op = p & n = integer" +
         'return {"op":"p", "n":integer, “value”: true if n is a prime number}' +
-        
+
         "? op = np & n = integer" +
         'return {"op":"np", "n":integer, “value”: nth prime number}'
         );
