@@ -10,7 +10,7 @@ import fs from 'fs';
 import mimes from './mimes.js';
 
 global.wwwroot = 'wwwroot';
-let defaultResource = 'index.html';
+let defaultResource = 'maths.html';
 
 function isDirectory(url) {
     let extension = path.extname(url).replace('.', '');

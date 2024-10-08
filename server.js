@@ -10,7 +10,7 @@ const server = createServer(async (req, res) => {
     if (!handleCORSPreflight(httpContext))
         if (!handleStaticResourceRequest(httpContext))
             if (!await router.API_EndPoint(httpContext))
-                httpContext.response.notFound('this end point does not exist...');
+                httpContext.response.notFound('end point does not exist...');
 
 });
 const PORT = process.env.PORT || 5000;

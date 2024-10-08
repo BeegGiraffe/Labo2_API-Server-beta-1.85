@@ -20,21 +20,37 @@
     <br>
     <div style="margin:auto; width:90%">
         <h1>Test du service /api/maths</h1>
-
+        <button onclick="test()">testing</button>
         <form action="api/maths">
             <legend>Url du service</legend>
             <input type="url" name="url" id="url">
             <label for="url">/api/maths</label>
             <input type="submit" value="Démarrer le test">
             <input type="button" value="Aide">
-            <legend>Tests</legend>
+            <li id="texte">Tests</li>
             <legend>Verdict</legend>
         </form>
-        
-        
+
+
     </div>
     <script>
-        console.log("maths");
+        function test() {
+            i = 0;
+            text = "";
+            let tabTest = ["op=+&x=-111&y=-244", "op=-&x=1&y=abc", "op=p&n=a", "op=-&x=111&y=244", "op=*&x=11.56&y=244.12345", "op=/&x=99&y=11.06",
+                "op=/&x=99&y=0", "op=/&x=0&y=0", "op=%&x=5&y=5", "op=%&x=100&y=13", "op=%&x=100&y=0", "op=%&x=0&y=0", "op=!&n=0", "op=p&n=0", "op=p&n=1",
+                "op=p&n=2", "op=p&n=5", "op=p&n=6", "op=p&n=6.5", "op=p&n=113", "op=p&n=114", "op=np&n=1", "op=np&n=30", "op=+&X=111&y=244", "op=+&x=111&Y=244",
+                "op=+&x=111&y=244&z=0", "op=!&n=5&z=0", "op=!&n=5.5", "z=0", "op=!&n=-5", "x="
+            ];
+            while (i < tabTest.length) {
+                let text = document.createElement('p');
+                fetch('http://localhost:5000/api/maths?' + tabTest[i])
+                    .then(response => response.json())
+                    .then(data => {text.innerHTML = data})
+                i++;
+                document.body.appendChild(text);
+            }
+        }
     </script>
 </body>
 
