@@ -46,7 +46,7 @@ export default class MathsController extends Controller {
           } else if (operator == "!" && !isNaN(n)) {
             reponse = factorial(n);
           } else if (operator == "p" && !isNaN(n)) {
-            reponse = isPrime(n);
+            reponse = isPrime(n).toString();
           } else if (operator == "np" && !isNaN(n)) {
             reponse = findPrime(n);
           }
@@ -54,7 +54,35 @@ export default class MathsController extends Controller {
         }
       } else this.HttpContext.response.JSON("Operator is invalid.");
     } else {
-      this.HttpContext.response.JSON("Operator is invalid.");
+      this.HttpContext.response.JSON(
+        "GET : Maths endpoint" +
+        "List of possible query strings:" +
+        
+        "? op = + & x = number & y = number" +
+        'return {“op"x":number, "y":number, "value": x + y}' +
+        
+        "? op = - & x = number & y = number" +
+        'return {"op":"-", "x":number, "y":number, "value": x - y}' +
+        
+        "? op = * & x = number & y = number" +
+        'return {"op":"*", "x":number, "y":number, "value": x * y}' +
+        
+        "? op = / & x = number & y = number" +
+        
+        'return {"op":"/", "x":number, "y":number, "value": x / y}' +
+        
+        "? op = % & x = number & y = number" +
+        'return {"op":"%", "x":number, "y":number, “value”: x % y}' +
+        
+        "? op = ! & n = integer" +
+        'return {"op":"%", "n":integer, "value": n!}' +
+        
+        "? op = p & n = integer" +
+        'return {"op":"p", "n":integer, “value”: true if n is a prime number}' +
+        
+        "? op = np & n = integer" +
+        'return {"op":"np", "n":integer, “value”: nth prime number}'
+        );
     }
   }
 }
