@@ -14,7 +14,7 @@ export default class MathsController extends Controller {
     } else {
       let data = this.HttpContext.path.params;
       let error = "";
-      let value = null;
+      let value;
 
       if (data["op"]) {
         if (isNaN(data["op"]) || data["op"] == " ") {
@@ -69,7 +69,12 @@ export default class MathsController extends Controller {
               if (error == "") {
                 let x = parseFloat(rest["x"]);
                 let y = parseFloat(rest["y"]);
-                value = x / y;
+
+                if (y == 0) {
+                  if (x == 0) { value = 'NaN'; }
+                  else { value = "Infinity"; }
+                }else { value = x / y; }
+
                 data.value = value;
                 this.HttpContext.response.JSON(data);                break;
               } else {
@@ -82,7 +87,11 @@ export default class MathsController extends Controller {
               if (error == "") {
                 let x = parseFloat(rest["x"]);
                 let y = parseFloat(rest["y"]);
-                value = x % y;
+
+                if (y == 0) {
+                  value = "NaN";
+                } else { value = x % y; }
+                
                 data.value = value;
                 this.HttpContext.response.JSON(data);               break;
               } else {
@@ -174,13 +183,12 @@ export default class MathsController extends Controller {
           break;
         }
         let n = parseFloat(params[param]);
-        if (!Number.isInteger(n) || n < 0) {
+        if (!Number.isInteger(n) || n <= 0) {
           error = `'${param}' parameter must be an integer > 0`;
           break;
         }
       } else {
         error = `'x', 'y' and 'n' parameters missing`;
-        break;
       }
     }
     return error;
