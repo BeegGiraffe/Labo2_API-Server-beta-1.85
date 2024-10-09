@@ -13,53 +13,176 @@ export default class MathsController extends Controller {
       handleStaticResourceRequest(this.HttpContext);
     } else {
       let data = this.HttpContext.path.params;
-      if (data) {
-        if (data["op"]) {
-          let operator = data["op"];
-          let x = data["x"];
-          let y = data["y"];
-          let n = data["n"];
-          let reponse;
-          if (operator == " ") {
-            operator = "+";
+      let error = "";
+      let value = null;
+
+      if (data["op"]) {
+        if (isNaN(data["op"]) || data["op"] == " ") {
+          let { op, ...rest } = data;
+
+          if (op == " ") {
+            op = "+";
           }
 
-          if (data["x"] && isNaN(x)) {
-            this.HttpContext.response.JSON("X is invalid.");
-          }
-          if (data["y"] && isNaN(y)) {
-            this.HttpContext.response.JSON("Y is invalid.");
-          }
-          if (data["n"] && isNaN(n)) {
-            this.HttpContext.response.JSON("N is invalid.");
-          }
-          if (data["x"] && data["y"] && data["n"]) {
-            this.HttpContext.response.JSON("To many parameters.");
-          }
-
-          if (isNaN(operator)) {
-            if (operator == "+" && !isNaN(x) && !isNaN(y)) {
-              reponse = parseInt(x) + parseInt(y);
-            } else if (operator == "-" && !isNaN(x) && !isNaN(y)) {
-              reponse = parseInt(x) - parseInt(y);
-            } else if (operator == "*" && !isNaN(x) && !isNaN(y)) {
-              reponse = parseInt(x) * parseInt(y);
-            } else if (operator == "/" && !isNaN(x) && !isNaN(y)) {
-              reponse = parseInt(x) / parseInt(y);
-            } else if (operator == "%" && !isNaN(x) && !isNaN(y)) {
-              reponse = parseInt(x) % parseInt(y);
-            } else if (operator == "!" && !isNaN(n)) {
-              reponse = factorial(n);
-            } else if (operator == "p" && !isNaN(n)) {
-              reponse = isPrime(n).toString();
-            } else if (operator == "np" && !isNaN(n)) {
-              reponse = findPrime(n);
+          switch (op) {
+            case "+": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let x = parseFloat(rest["x"]);
+                let y = parseFloat(rest["y"]);
+                value = x + y;
+                data.value = value;
+                this.HttpContext.response.JSON(data);                break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);                break;
+              }
             }
-            this.HttpContext.response.JSON(reponse);
+            case "-": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let x = parseFloat(rest["x"]);
+                let y = parseFloat(rest["y"]);
+                value = x - y;
+                data.value = value;
+                this.HttpContext.response.JSON(data);                break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);                break;
+              }
+            }
+            case "*": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let x = parseFloat(rest["x"]);
+                let y = parseFloat(rest["y"]);
+                value = x * y;
+                data.value = value;
+                this.HttpContext.response.JSON(data);                break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);                break;
+              }
+            }
+            case "/": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let x = parseFloat(rest["x"]);
+                let y = parseFloat(rest["y"]);
+                value = x / y;
+                data.value = value;
+                this.HttpContext.response.JSON(data);                break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);                break;
+              }
+            }
+            case "%": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let x = parseFloat(rest["x"]);
+                let y = parseFloat(rest["y"]);
+                value = x % y;
+                data.value = value;
+                this.HttpContext.response.JSON(data);               break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);               break;
+              }
+            }
+            case "!": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let n = parseInt(rest["n"]);
+                value = factorial(n);
+
+                data.value = value;
+                this.HttpContext.response.JSON(data);              break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);              break;
+              }
+            }
+            case "p": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let n = parseInt(rest["n"]);
+                value = isPrime(n).toString();
+
+                data.value = value;
+                this.HttpContext.response.JSON(data);              break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);              break;
+              }
+            }
+            case "np": {
+              error = this.verifyParams(rest);
+              if (error == "") {
+                let n = parseInt(rest["n"]);
+                value = findPrime(n);
+
+                data.value = value;
+                this.HttpContext.response.JSON(data);              break;
+              } else {
+                data.error = error;
+                this.HttpContext.response.JSON(data);              break;
+              }
+            }
+            default:
+              error = "'op' parameter is invalid";
+              data.error = error;
+              this.HttpContext.response.JSON(data);
           }
-        } else this.HttpContext.response.JSON("Operator is invalid.");
+        } else {
+          error = "'op' parameter is a number";
+          data.error = error;
+          this.HttpContext.response.JSON(data);
+        }
       } else {
+        error = "'op' parameter is missing";
+        data.error = error;
+        this.HttpContext.response.JSON(data);
       }
     }
+  }
+
+  verifyParams(params) {
+    let error = "";
+    for (let param in params) {     
+      if (isNaN(parseInt(params[param]))) {
+        error = `'${param}' parameter is not a number`;
+        break;
+      }
+
+      if (param == "x" || param == "y") {
+        if (!("y" in params)) {
+          error = `'y' parameter is missing`;
+          break;
+        }
+        if (!("x" in params)) {
+          error = `'x' parameter is missing`;
+          break;
+        }
+        if (Object.keys(params).length > 2) {
+          error = `too many parameters`;
+          break;
+        }
+      } else if (param == "n") {
+        if (Object.keys(params).length > 1) {
+          error = `too many parameters`;
+          break;
+        }
+        let n = parseFloat(params[param]);
+        if (!Number.isInteger(n) || n < 0) {
+          error = `'${param}' parameter must be an integer > 0`;
+          break;
+        }
+      } else {
+        error = `'x', 'y' and 'n' parameters missing`;
+        break;
+      }
+    }
+    return error;
   }
 }
