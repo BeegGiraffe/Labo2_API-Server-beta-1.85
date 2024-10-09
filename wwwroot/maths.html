@@ -20,36 +20,53 @@
     <br>
     <div style="margin:auto; width:90%">
         <h1>Test du service /api/maths</h1>
-        <button onclick="test()">testing</button>
-        <form action="api/maths">
-            <legend>Url du service</legend>
-            <input type="url" name="url" id="url">
-            <label for="url">/api/maths</label>
-            <input type="submit" value="Démarrer le test">
-            <input type="button" value="Aide">
-            <li id="texte">Tests</li>
-            <legend>Verdict</legend>
-        </form>
-
-
+        <legend>Url du service</legend>
+        <input type="url" name="url" id="url" value="http://localhost:5000">
+        <label for="url">/api/maths</label>
+        <button onclick="test()">Démarrer le test</button>
+        <button onclick="redirect()">Aide</button>
     </div>
+    <div id="container" style="margin:auto; width:90%"></div>
     <script>
         function test() {
-            i = 0;
-            text = "";
-            let tabTest = ["op=+&x=-111&y=-244", "op=-&x=1&y=abc", "op=p&n=a", "op=-&x=111&y=244", "op=*&x=11.56&y=244.12345", "op=/&x=99&y=11.06",
-                "op=/&x=99&y=0", "op=/&x=0&y=0", "op=%&x=5&y=5", "op=%&x=100&y=13", "op=%&x=100&y=0", "op=%&x=0&y=0", "op=!&n=0", "op=p&n=0", "op=p&n=1",
-                "op=p&n=2", "op=p&n=5", "op=p&n=6", "op=p&n=6.5", "op=p&n=113", "op=p&n=114", "op=np&n=1", "op=np&n=30", "op=+&X=111&y=244", "op=+&x=111&Y=244",
-                "op=+&x=111&y=244&z=0", "op=!&n=5&z=0", "op=!&n=5.5", "z=0", "op=!&n=-5", "x="
-            ];
+            let lien = document.getElementById("url").value;
+            let div = document.getElementById("container");
+            div.innerHTML = "";
+            let api = '/api/maths?';
+            var i = 0;
+            let ok_text = "OK ---> ";
+            let erreur_text = "Erreur ---> ";
+            let tabTest = ["op=+&x=-111&y=-244", "op=-&x=1&y=abc", "op=p&n=a",
+                "op=-&x=111&y=244", "op=*&x=11.56&y=244.12345", "op=/&x=99&y=11.06",
+                "op=/&x=99&y=0", "op=/&x=0&y=0", "op=%&x=5&y=5", "op=%&x=100&y=13",
+                "op=%&x=100&y=0", "op=%&x=0&y=0", "op=!&n=0", "op=p&n=0", "op=p&n=1",
+                "op=p&n=2", "op=p&n=5", "op=p&n=6", "op=p&n=6.5", "op=p&n=113",
+                "op=p&n=114", "op=np&n=1", "op=np&n=30", "op=+&X=111&y=244",
+                "op=+&x=111&Y=244", "op=+&x=111&y=244&z=0", "op=!&n=5&z=0",
+                "op=!&n=5.5", "z=0", "op=!&n=-5", "x="];
             while (i < tabTest.length) {
                 let text = document.createElement('p');
-                fetch('http://localhost:5000/api/maths?' + tabTest[i])
-                    .then(response => response.json())
-                    .then(data => {text.innerHTML = data})
+                let j = i;
+                fetch(lien + api + tabTest[i])
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data == "") {
+                            data = tabTest[j];
+                            text.innerHTML = erreur_text + data;
+                        }
+                        else
+                        {
+                            text.innerHTML = ok_text + data;
+                        }
+                    })
+                div.appendChild(text);
                 i++;
-                document.body.appendChild(text);
             }
+        }
+        function redirect() {
+            let lien = document.getElementById("url").value;
+            let api = '/api/maths?';
+            window.location.href = lien + api;
         }
     </script>
 </body>
