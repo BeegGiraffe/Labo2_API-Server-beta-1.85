@@ -26,7 +26,7 @@
             <button onclick="test()">Démarrer le test</button>
             <button onclick="redirect()">Aide</button>
         </fieldset>
-        
+
         <fieldset>
             <legend><b>Tests</b></legend>
             <br>
@@ -38,7 +38,7 @@
             <div id="verdict" style="margin:auto; width:90%; font-weight: bold;"></div>
         </fieldset>
     </div>
-    
+
     <script>
         function test() {
             let lien = document.getElementById("url").value;
@@ -62,22 +62,32 @@
             while (i < tabTest.length) {
                 let text = document.createElement('p');
                 let j = i;
-                fetch(lien + api + tabTest[i])
-                    .then(response => response.text())
-                    .then(data => {
-                        if (data == "") {
-                            data = tabTest[j];
-                            text.innerHTML = erreur_text + data;
-                            nbErreur++;
-                        }
-                        else
-                        {
-                            text.innerHTML = ok_text + data;
-                        }
-                    })
+                try {
+                    fetch(lien + api + tabTest[i])
+                        .then(response =>
+                            response.text()
+                        )
+                        .then(data => {
+                            if (data == "") {
+                                data = tabTest[j];
+                                text.innerHTML = erreur_text + data;
+                                nbErreur++;
+                            }
+                            else {
+                                text.innerHTML = ok_text + data;
+                            }
+                        })
+                        .catch(err => {
+                            throw Error("mauvais lien");
+                        })
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
                 div.appendChild(text);
                 i++;
             }
+            verdictDiv.innerHTML = "";
             if (nbErreur > 0) {
                 verdict.innerHTML = `Il y a ${nbErreur} erreurs parmi les tests`;
             } else {
