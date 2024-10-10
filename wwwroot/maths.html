@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>KBG-API Server - /api/maths</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/site.css" />
-    <link rel="icon" href="images/favicon.png">
 </head>
 
 <body>
@@ -20,22 +18,39 @@
     <br>
     <div style="margin:auto; width:90%">
         <h1>Test du service /api/maths</h1>
-        <legend>Url du service</legend>
-        <input type="url" name="url" id="url" value="http://localhost:5000">
-        <label for="url">/api/maths</label>
-        <button onclick="test()">Démarrer le test</button>
-        <button onclick="redirect()">Aide</button>
+        <fieldset>
+            <legend><b>Url du service</b></legend>
+            <br>
+            <input type="url" name="url" id="url" value="http://localhost:5000">
+            <label for="url">/api/maths</label>
+            <button onclick="test()">Démarrer le test</button>
+            <button onclick="redirect()">Aide</button>
+        </fieldset>
+        
+        <fieldset>
+            <legend><b>Tests</b></legend>
+            <br>
+            <div id="container" style="margin:auto; width:90%; font-weight: bold;"></div>
+        </fieldset>
+        <fieldset>
+            <legend><b>Verdict</b></legend>
+            <br>
+            <div id="verdict" style="margin:auto; width:90%; font-weight: bold;"></div>
+        </fieldset>
     </div>
-    <div id="container" style="margin:auto; width:90%"></div>
+    
     <script>
         function test() {
             let lien = document.getElementById("url").value;
             let div = document.getElementById("container");
+            let verdictDiv = document.getElementById("verdict");
+            let verdict = document.createElement('p');
             div.innerHTML = "";
             let api = '/api/maths?';
             var i = 0;
             let ok_text = "OK ---> ";
             let erreur_text = "Erreur ---> ";
+            let nbErreur = 0;
             let tabTest = ["op=+&x=-111&y=-244", "op=-&x=1&y=abc", "op=p&n=a",
                 "op=-&x=111&y=244", "op=*&x=11.56&y=244.12345", "op=/&x=99&y=11.06",
                 "op=/&x=99&y=0", "op=/&x=0&y=0", "op=%&x=5&y=5", "op=%&x=100&y=13",
@@ -53,6 +68,7 @@
                         if (data == "") {
                             data = tabTest[j];
                             text.innerHTML = erreur_text + data;
+                            nbErreur++;
                         }
                         else
                         {
@@ -62,6 +78,12 @@
                 div.appendChild(text);
                 i++;
             }
+            if (nbErreur > 0) {
+                verdict.innerHTML = `Il y a ${nbErreur} erreurs parmi les tests`;
+            } else {
+                verdict.innerHTML = `Bravo!!! Aucun problème`;
+            }
+            verdictDiv.appendChild(verdict);
         }
         function redirect() {
             let lien = document.getElementById("url").value;
